@@ -1,26 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import AccessibilityBar from "./components/AccessibilityBar";
+import ToolsBar from "./components/ToolsBar";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	return (
+		<div className="overflow-hidden w-screen h-screen bg-neutral-200 flex flex-col">
+			{/* Menu, save, changes history */}
+			<AccessibilityBar></AccessibilityBar>
+
+			{/* Wrapper */}
+			<div className="flex w-full h-full">
+				{/* Canvas */}
+				<div className="w-full h-full overflow-auto">
+
+				</div>
+
+				{/* Drawing tools */}
+				<ToolsBar></ToolsBar>
+			</div>
+		</div>
+	);
 }
 
 export default App;
