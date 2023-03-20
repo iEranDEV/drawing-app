@@ -1,23 +1,30 @@
-import { AiOutlineMenu, AiOutlineSave } from 'react-icons/ai'
-import { BiUndo, BiRedo } from 'react-icons/bi'
+import { AiOutlineClear, AiOutlineMenu } from 'react-icons/ai'
+import { BiUndo, BiRedo, BiSave } from 'react-icons/bi'
 
-function AccessibilityBar() {
+type AccessibilityBarProps = {
+    ctx: CanvasRenderingContext2D | undefined | null
+}
+
+function AccessibilityBar({ ctx }: AccessibilityBarProps) {
     return (
         <div className="w-full bg-neutral-100 border-b border-neutral-300 p-3 flex justify-between text-neutral-600">
 
             {/* Save, undo, redo */}
             <div className='flex gap-4'>
                 {/* Menu */}
-                <AiOutlineMenu className='h-6 w-6'></AiOutlineMenu>
+                <AiOutlineMenu className='icon-accessibility'></AiOutlineMenu>
 
                 {/* Save image */}
-                <AiOutlineSave className='h-6 w-6'></AiOutlineSave>
+                <BiSave className='icon-accessibility'></BiSave>
 
                 {/* Undo */}
-                <BiUndo className='h-6 w-6'></BiUndo>
+                <BiUndo className='icon-accessibility'></BiUndo>
 
                 {/* Redo */}
-                <BiRedo className='h-6 w-6'></BiRedo>
+                <BiRedo className='icon-accessibility'></BiRedo>
+
+                {/* Clear canvas */}
+                <AiOutlineClear className='icon-accessibility' onClick={() => ctx?.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)}></AiOutlineClear>
             </div>
 
             {/* Scroll values */}

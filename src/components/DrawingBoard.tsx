@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 
-function DrawingBoard() {
-    const [ctx, setCtx] = useState<CanvasRenderingContext2D | undefined | null>(null);
+type DrawingBoardProps = {
+    ctx: CanvasRenderingContext2D | undefined | null,
+    setCtx: Function
+}
+
+function DrawingBoard({ ctx, setCtx }: DrawingBoardProps) {
+
     const [painting, setPainting] = useState({
         isPainting: false,
         startX: 0,

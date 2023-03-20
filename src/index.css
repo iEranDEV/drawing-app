@@ -13,3 +13,7 @@
 ::-webkit-scrollbar-thumb:hover {
 	background: #555;
 }
+
+.icon-accessibility {
+	@apply h-6 w-6 cursor-pointer hover:text-blue-500;
+}
