@@ -15,5 +15,5 @@
 }
 
 .icon-accessibility {
-	@apply h-6 w-6 cursor-pointer hover:text-blue-500;
+	@apply h-6 w-6 cursor-pointer hover:text-neutral-800;
 }
