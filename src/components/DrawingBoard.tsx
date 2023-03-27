@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from "react";
 
 type DrawingBoardProps = {
     ctx: CanvasRenderingContext2D | undefined | null,
-    setCtx: Function
+    setCtx: Function,
+    zoom: number
 }
 
-function DrawingBoard({ ctx, setCtx }: DrawingBoardProps) {
+function DrawingBoard({ ctx, setCtx, zoom }: DrawingBoardProps) {
 
     const [painting, setPainting] = useState({
         isPainting: false,
@@ -20,6 +21,7 @@ function DrawingBoard({ ctx, setCtx }: DrawingBoardProps) {
         if(canvasElement.current) {
             canvasElement.current.width = canvasElement.current.clientWidth
             canvasElement.current.height = canvasElement.current.clientHeight
+            console.log('changed size')
         }
     }, [canvasElement])
 
@@ -28,8 +30,8 @@ function DrawingBoard({ ctx, setCtx }: DrawingBoardProps) {
 
         if(ctx && canvasElement.current) {
             let rect = (e.target as HTMLElement).getBoundingClientRect();
-            let x = e.clientX - rect.left;
-            let y = e.clientY - rect.top;
+            let x = (e.clientX - rect.left) / zoom;
+            let y = (e.clientY - rect.top) / zoom;
             setPainting({
                 isPainting: true,
                 startX: x,
@@ -54,8 +56,8 @@ function DrawingBoard({ ctx, setCtx }: DrawingBoardProps) {
         if(!painting.isPainting) return;
 
         let rect = (e.target as HTMLElement).getBoundingClientRect();
-        let x = e.clientX - rect.left;
-        let y = e.clientY - rect.top;
+        let x = (e.clientX - rect.left) / zoom;
+        let y = (e.clientY - rect.top) / zoom;
 
         if(ctx && canvasElement.current) {
             ctx.lineWidth = 1;
@@ -66,12 +68,18 @@ function DrawingBoard({ ctx, setCtx }: DrawingBoardProps) {
         }
     }
 
+    const getScale = (): number => {
+        console.log(1 * zoom)
+        return 1 * zoom;
+    }
+
     return (
         <canvas ref={canvasElement} 
                 onMouseDown={(e) => handleMouseDown(e)} 
                 onMouseUp={(e) => handleMouseUp(e)}
                 onMouseMove={(e) => handleDraw(e)}
-                className="bg-white absolute w-full h-full cursor-crosshair"
+                className="bg-white absolute cursor-crosshair origin-top-left"
+                style={{ width: '1920px', height: '1080px', transform: 'scale(' + getScale() + ')'}}
         >
 
         </canvas>

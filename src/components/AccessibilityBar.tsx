@@ -4,10 +4,12 @@ import { RiPaintLine } from 'react-icons/ri'
 import { BsBorderWidth } from 'react-icons/bs'
 
 type AccessibilityBarProps = {
-    ctx: CanvasRenderingContext2D | undefined | null
+    ctx: CanvasRenderingContext2D | undefined | null,
+    zoom: number,
+    setZoom: Function
 }
 
-function AccessibilityBar({ ctx }: AccessibilityBarProps) {
+function AccessibilityBar({ ctx, zoom, setZoom }: AccessibilityBarProps) {
 
     
     return (
@@ -55,8 +57,8 @@ function AccessibilityBar({ ctx }: AccessibilityBarProps) {
             </div>
 
             {/* Scroll values */}
-            <div>
-                {/* TODO:  */}
+            <div className='flex h-full gap-3 justify-center items-center'>
+                <input type="range" min={50} max={200} step={10} value={zoom * 100} onChange={(e) => setZoom((e.target.value) as any / 100)} />
             </div>
         </div>
     )
