@@ -1,5 +1,5 @@
 import { AiOutlineClear, AiOutlineMenu } from 'react-icons/ai'
-import { BiUndo, BiRedo, BiSave, BiPencil, BiSquare, BiCircle, BiEraser } from 'react-icons/bi'
+import { BiUndo, BiRedo, BiSave, BiPencil, BiSquare, BiCircle, BiEraser, BiPlus, BiMinus } from 'react-icons/bi'
 import { RiPaintLine } from 'react-icons/ri'
 import { BsBorderWidth } from 'react-icons/bs'
 
@@ -11,6 +11,9 @@ type AccessibilityBarProps = {
 
 function AccessibilityBar({ ctx, zoom, setZoom }: AccessibilityBarProps) {
 
+    const setZoomValue = (value: number) => {
+        if(value >= 50 && value <= 200) setZoom(value / 100)
+    }
     
     return (
         <div className="w-full h-12 bg-neutral-100 border-b border-neutral-300 px-5 flex justify-between items-center text-neutral-600 overflow-hidden">
@@ -58,7 +61,13 @@ function AccessibilityBar({ ctx, zoom, setZoom }: AccessibilityBarProps) {
 
             {/* Scroll values */}
             <div className='flex h-full gap-3 justify-center items-center'>
+                <button onClick={() => setZoomValue((zoom * 100) - 10)}>
+                    <BiMinus className='icon-accessibility'></BiMinus>
+                </button>
                 <input type="range" min={50} max={200} step={10} value={zoom * 100} onChange={(e) => setZoom((e.target.value) as any / 100)} />
+                <button onClick={() => setZoomValue((zoom * 100) + 10)}>
+                    <BiPlus className='icon-accessibility'></BiPlus>
+                </button>
             </div>
         </div>
     )
