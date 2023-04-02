@@ -3,10 +3,11 @@ import { useEffect, useRef, useState } from "react";
 type DrawingBoardProps = {
     ctx: CanvasRenderingContext2D | undefined | null,
     setCtx: Function,
-    zoom: number
+    zoom: number,
+    brush: {type: string, width: number, color: string}
 }
 
-function DrawingBoard({ ctx, setCtx, zoom }: DrawingBoardProps) {
+function DrawingBoard({ ctx, setCtx, zoom, brush }: DrawingBoardProps) {
 
     const [painting, setPainting] = useState({
         isPainting: false,
@@ -21,7 +22,6 @@ function DrawingBoard({ ctx, setCtx, zoom }: DrawingBoardProps) {
         if(canvasElement.current) {
             canvasElement.current.width = canvasElement.current.clientWidth
             canvasElement.current.height = canvasElement.current.clientHeight
-            console.log('changed size')
         }
     }, [canvasElement])
 
@@ -60,7 +60,8 @@ function DrawingBoard({ ctx, setCtx, zoom }: DrawingBoardProps) {
         let y = (e.clientY - rect.top) / zoom;
 
         if(ctx && canvasElement.current) {
-            ctx.lineWidth = 1;
+            ctx.lineWidth = brush.width;
+            ctx.strokeStyle = brush.color;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
             ctx.lineTo(x, y);
@@ -69,7 +70,6 @@ function DrawingBoard({ ctx, setCtx, zoom }: DrawingBoardProps) {
     }
 
     const getScale = (): number => {
-        console.log(1 * zoom)
         return 1 * zoom;
     }
 

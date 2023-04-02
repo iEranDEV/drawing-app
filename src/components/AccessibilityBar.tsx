@@ -2,21 +2,25 @@ import { AiOutlineClear, AiOutlineMenu } from 'react-icons/ai'
 import { BiUndo, BiRedo, BiSave, BiPencil, BiSquare, BiCircle, BiEraser, BiPlus, BiMinus } from 'react-icons/bi'
 import { RiPaintLine } from 'react-icons/ri'
 import { BsBorderWidth } from 'react-icons/bs'
+import LineWidthModal from './modals/LineWidthModal'
+import AccessibilityButton from './AccessibilityButton'
 
 type AccessibilityBarProps = {
     ctx: CanvasRenderingContext2D | undefined | null,
     zoom: number,
-    setZoom: Function
+    setZoom: Function,
+    brush: {type: string, width: number, color: string},
+    setBrush: Function
 }
 
-function AccessibilityBar({ ctx, zoom, setZoom }: AccessibilityBarProps) {
+function AccessibilityBar({ ctx, zoom, setZoom, brush, setBrush }: AccessibilityBarProps) {
 
     const setZoomValue = (value: number) => {
         if(value >= 50 && value <= 200) setZoom(value / 100)
     }
     
     return (
-        <div className="w-full h-12 bg-neutral-100 border-b border-neutral-300 px-5 flex justify-between items-center text-neutral-600 overflow-hidden">
+        <div className="w-full h-12 bg-neutral-100 border-b border-neutral-300 px-5 flex justify-between items-center text-neutral-600 z-50">
 
             {/* Save, undo, redo */}
             <div className='flex h-full gap-3 justify-center items-center'>
@@ -52,11 +56,10 @@ function AccessibilityBar({ ctx, zoom, setZoom }: AccessibilityBarProps) {
                 <BiSquare className='icon-accessibility'></BiSquare>
 
                 {/* Circle */}
-                <BiCircle className='icon-accessibility'></BiCircle>
+                <AccessibilityButton name={'Circle tool'} icon={<BiCircle className='icon-accessibility'></BiCircle>}></AccessibilityButton>
 
                 {/* Line width */}
-                <BsBorderWidth className='icon-accessibility'></BsBorderWidth>
-
+                <AccessibilityButton name={'Line width'} icon={<BsBorderWidth className='icon-accessibility'></BsBorderWidth>}></AccessibilityButton>
             </div>
 
             {/* Scroll values */}
