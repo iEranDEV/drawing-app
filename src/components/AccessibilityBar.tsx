@@ -53,13 +53,13 @@ function AccessibilityBar({ ctx, zoom, setZoom, brush, setBrush }: Accessibility
                 <RiPaintLine className='icon-accessibility'></RiPaintLine>
 
                 {/* Square */}
-                <BiSquare className='icon-accessibility'></BiSquare>
+                <AccessibilityButton name={'Square tool'} icon={<BiSquare className='icon-accessibility'></BiSquare>}></AccessibilityButton>
 
                 {/* Circle */}
                 <AccessibilityButton name={'Circle tool'} icon={<BiCircle className='icon-accessibility'></BiCircle>}></AccessibilityButton>
 
                 {/* Line width */}
-                <AccessibilityButton name={'Line width'} icon={<BsBorderWidth className='icon-accessibility'></BsBorderWidth>}></AccessibilityButton>
+                <AccessibilityButton name={'Line width'} icon={<BsBorderWidth className='icon-accessibility'></BsBorderWidth>} modal={<LineWidthModal brush={brush} setBrush={setBrush}></LineWidthModal>}></AccessibilityButton>
             </div>
 
             {/* Scroll values */}
