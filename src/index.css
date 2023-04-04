@@ -17,3 +17,7 @@
 .icon-accessibility {
 	@apply h-6 w-6 cursor-pointer hover:text-neutral-800;
 }
+
+* {
+	@apply select-none;
+}
