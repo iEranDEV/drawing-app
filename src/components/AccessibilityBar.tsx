@@ -1,5 +1,5 @@
-import { AiOutlineClear, AiOutlineMenu } from 'react-icons/ai'
-import { BiUndo, BiRedo, BiSave, BiPencil, BiSquare, BiCircle, BiEraser, BiPlus, BiMinus } from 'react-icons/bi'
+import { AiOutlineClear } from 'react-icons/ai'
+import { BiSave, BiPencil, BiSquare, BiCircle, BiEraser, BiPlus, BiMinus } from 'react-icons/bi'
 import { RiPaintLine } from 'react-icons/ri'
 import { BsBorderWidth } from 'react-icons/bs'
 import LineWidthModal from './modals/LineWidthModal'
@@ -25,16 +25,18 @@ function AccessibilityBar({ ctx, zoom, setZoom, brush, setBrush }: Accessibility
             {/* Save, undo, redo */}
             <div className='flex h-full gap-3 justify-center items-center'>
                 {/* Menu */}
+                {/*
                 <AiOutlineMenu className='icon-accessibility'></AiOutlineMenu>
+                */}
 
                 {/* Save image */}
                 <BiSave className='icon-accessibility'></BiSave>
 
-                {/* Undo */}
+                {/*}
                 <BiUndo className='icon-accessibility'></BiUndo>
 
-                {/* Redo */}
                 <BiRedo className='icon-accessibility'></BiRedo>
+                /*}
 
                 {/* Clear canvas */}
                 <AiOutlineClear  onClick={() => ctx?.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)} className='icon-accessibility'></AiOutlineClear>
