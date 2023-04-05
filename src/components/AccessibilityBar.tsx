@@ -39,14 +39,14 @@ function AccessibilityBar({ ctx, zoom, setZoom, brush, setBrush }: Accessibility
                 /*}
 
                 {/* Clear canvas */}
-                <AiOutlineClear  onClick={() => ctx?.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)} className='icon-accessibility'></AiOutlineClear>
+                <AccessibilityButton onClick={() => ctx?.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)} icon={<AiOutlineClear className='icon-accessibility'></AiOutlineClear>}></AccessibilityButton>
             </div>
 
             {/* Tools */}
             <div className='flex h-full gap-3 justify-center items-center'>
                 
                 {/* Pen */}
-                <BiPencil className='icon-accessibility'></BiPencil>
+                <AccessibilityButton activeProp={brush.type === 'PENCIL'} icon={<BiPencil className='icon-accessibility'></BiPencil>}></AccessibilityButton>
 
                 {/* Eraser */}
                 <BiEraser className='icon-accessibility'></BiEraser>
@@ -55,13 +55,13 @@ function AccessibilityBar({ ctx, zoom, setZoom, brush, setBrush }: Accessibility
                 <RiPaintLine className='icon-accessibility'></RiPaintLine>
 
                 {/* Square */}
-                <AccessibilityButton name={'Square tool'} icon={<BiSquare className='icon-accessibility'></BiSquare>}></AccessibilityButton>
+                <AccessibilityButton icon={<BiSquare className='icon-accessibility'></BiSquare>}></AccessibilityButton>
 
                 {/* Circle */}
-                <AccessibilityButton name={'Circle tool'} icon={<BiCircle className='icon-accessibility'></BiCircle>}></AccessibilityButton>
+                <AccessibilityButton icon={<BiCircle className='icon-accessibility'></BiCircle>}></AccessibilityButton>
 
                 {/* Line width */}
-                <AccessibilityButton name={'Line width'} icon={<BsBorderWidth className='icon-accessibility'></BsBorderWidth>} modal={<LineWidthModal brush={brush} setBrush={setBrush}></LineWidthModal>}></AccessibilityButton>
+                <AccessibilityButton icon={<BsBorderWidth className='icon-accessibility'></BsBorderWidth>} modal={<LineWidthModal brush={brush} setBrush={setBrush}></LineWidthModal>}></AccessibilityButton>
             </div>
 
             {/* Scroll values */}
