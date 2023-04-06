@@ -1,13 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { BrushContext } from "../context/BrushContext";
 
 type DrawingBoardProps = {
     ctx: CanvasRenderingContext2D | undefined | null,
     setCtx: Function,
-    zoom: number,
-    brush: {type: string, width: number, color: string}
+    zoom: number
 }
 
-function DrawingBoard({ ctx, setCtx, zoom, brush }: DrawingBoardProps) {
+function DrawingBoard({ ctx, setCtx, zoom }: DrawingBoardProps) {
+
+    const brushContext = useContext(BrushContext)
 
     const [painting, setPainting] = useState({
         isPainting: false,
@@ -60,8 +62,8 @@ function DrawingBoard({ ctx, setCtx, zoom, brush }: DrawingBoardProps) {
         let y = (e.clientY - rect.top) / zoom;
 
         if(ctx && canvasElement.current) {
-            ctx.lineWidth = brush.width;
-            ctx.strokeStyle = brush.color;
+            ctx.lineWidth = brushContext.brush.width;
+            ctx.strokeStyle = brushContext.brush.color;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
             ctx.lineTo(x, y);

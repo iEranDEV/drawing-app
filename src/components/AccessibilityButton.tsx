@@ -9,13 +9,14 @@ type AccessibilityButtonProps = {
 
 function AccessibilityButton({ icon, modal, activeProp, onClick }: AccessibilityButtonProps ) {
     const [active, setActive] = useState(false);
+    const [modalLoc, setModalLoc] = useState({x: 0, y: 0});
 
     useEffect(() => {
         if(!active) return;
         if(!modal) return;
 
         const handleModal = (e: any) => {
-            if(e.target.localName == 'input') return;
+            console.log(e);
             setActive(false);
         }
 
@@ -32,7 +33,10 @@ function AccessibilityButton({ icon, modal, activeProp, onClick }: Accessibility
     const handleIconClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.preventDefault();
         e.stopPropagation();
-        if(modal) setActive(!active);
+        if(modal) {
+            setModalLoc({x: e.clientX, y: e.clientY})
+            setActive(!active);
+        }
         if(onClick) onClick();
     }
 

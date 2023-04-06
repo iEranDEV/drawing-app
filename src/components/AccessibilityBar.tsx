@@ -4,16 +4,19 @@ import { RiPaintLine } from 'react-icons/ri'
 import { BsBorderWidth } from 'react-icons/bs'
 import LineWidthModal from './modals/LineWidthModal'
 import AccessibilityButton from './AccessibilityButton'
+import ColorModal from './modals/ColorModal'
+import { useContext } from 'react'
+import { BrushContext } from '../context/BrushContext'
 
 type AccessibilityBarProps = {
     ctx: CanvasRenderingContext2D | undefined | null,
     zoom: number,
     setZoom: Function,
-    brush: {type: string, width: number, color: string},
-    setBrush: Function
 }
 
-function AccessibilityBar({ ctx, zoom, setZoom, brush, setBrush }: AccessibilityBarProps) {
+function AccessibilityBar({ ctx, zoom, setZoom }: AccessibilityBarProps) {
+
+    const brushContext = useContext(BrushContext);
 
     const setZoomValue = (value: number) => {
         if(value >= 50 && value <= 200) setZoom(value / 100)
@@ -46,7 +49,7 @@ function AccessibilityBar({ ctx, zoom, setZoom, brush, setBrush }: Accessibility
             <div className='flex h-full gap-3 justify-center items-center'>
                 
                 {/* Pen */}
-                <AccessibilityButton activeProp={brush.type === 'PENCIL'} icon={<BiPencil className='icon-accessibility'></BiPencil>}></AccessibilityButton>
+                <AccessibilityButton activeProp={brushContext.brush.type === 'PENCIL'} icon={<BiPencil className='icon-accessibility'></BiPencil>}></AccessibilityButton>
 
                 {/* Eraser */}
                 <BiEraser className='icon-accessibility'></BiEraser>
@@ -61,7 +64,10 @@ function AccessibilityBar({ ctx, zoom, setZoom, brush, setBrush }: Accessibility
                 <AccessibilityButton icon={<BiCircle className='icon-accessibility'></BiCircle>}></AccessibilityButton>
 
                 {/* Line width */}
-                <AccessibilityButton icon={<BsBorderWidth className='icon-accessibility'></BsBorderWidth>} modal={<LineWidthModal brush={brush} setBrush={setBrush}></LineWidthModal>}></AccessibilityButton>
+                <AccessibilityButton icon={<BsBorderWidth className='icon-accessibility'></BsBorderWidth>} modal={<LineWidthModal></LineWidthModal>}></AccessibilityButton>
+
+                {/* Color */}
+                <AccessibilityButton icon={<div className='h-6 w-6 border border-neutral-300 rounded-lg cursor-pointer' style={{ backgroundColor: brushContext.brush.color}}></div>} modal={<ColorModal></ColorModal>}></AccessibilityButton>
             </div>
 
             {/* Scroll values */}
