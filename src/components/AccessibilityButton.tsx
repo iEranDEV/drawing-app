@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { cloneElement, useEffect, useState } from "react";
 
 type AccessibilityButtonProps = {
     icon: JSX.Element,
@@ -11,18 +11,11 @@ function AccessibilityButton({ icon, modal, activeProp, onClick }: Accessibility
     const [active, setActive] = useState(false);
     const [modalLoc, setModalLoc] = useState({x: 0, y: 0});
 
-    useEffect(() => {
-        if(!active) return;
-        if(!modal) return;
+    const hideModal = () => {
+        setActive(false);
+    }
 
-        const handleModal = (e: any) => {
-            console.log(e);
-            setActive(false);
-        }
-
-        window.addEventListener("mousedown", handleModal);
-        return () => window.removeEventListener("mousedown", handleModal);
-    }, [active]);
+    const modalElement = modal ? cloneElement(modal, { loc: modalLoc, hideModal: hideModal }) : null;
 
     useEffect(() => {
         if(activeProp !== undefined) {
@@ -34,7 +27,8 @@ function AccessibilityButton({ icon, modal, activeProp, onClick }: Accessibility
         e.preventDefault();
         e.stopPropagation();
         if(modal) {
-            setModalLoc({x: e.clientX, y: e.clientY})
+            const rect = (e.target as HTMLElement).getBoundingClientRect();
+            setModalLoc({x: rect.left + (rect.width / 2), y: rect.top + 24})
             setActive(!active);
         }
         if(onClick) onClick();
@@ -46,7 +40,7 @@ function AccessibilityButton({ icon, modal, activeProp, onClick }: Accessibility
                 <span className={'peer ' + (active && 'text-indigo-600')}>{icon}</span>
                 {activeProp !== undefined && <div className="absolute h-1 w-5 bg-indigo-500 rounded-t-lg left-1/2 -translate-x-1/2 translate-y-1.5"></div>}
             </div>
-            {modal && active && modal}
+            {modalElement && active && modalElement}
         </div>
     )
 }

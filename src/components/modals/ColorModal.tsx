@@ -1,9 +1,10 @@
 import { useContext } from 'react';
 import { SketchPicker } from 'react-color';
 import { BrushContext } from '../../context/BrushContext';
+import Modal from './Modal';
 
 
-function ColorModal() {
+function ColorModal({ loc, hideModal }: { loc?: {x: number, y: number}, hideModal?: Function}) {
 
     const brushContext = useContext(BrushContext);
 
@@ -14,9 +15,11 @@ function ColorModal() {
     }
 
     return (
-        <div className="animate-slideFromTop absolute w-max bg-white border border-neutral-300 p-2 left-1/2 rounded-lg">
-            <SketchPicker></SketchPicker>
-        </div>
+        <Modal hideModal={hideModal}>
+            <div className="animate-slideFromTop absolute w-max bg-white border border-neutral-300 p-2 left-1/2 rounded-lg">
+            
+            </div>
+        </Modal>
     )
 }
 
