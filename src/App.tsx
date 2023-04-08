@@ -6,7 +6,7 @@ import { BrushContext } from "./context/BrushContext";
 function App() {
 	const [ctx, setCtx] = useState<CanvasRenderingContext2D | undefined | null>(null);
 	const [zoom, setZoom] = useState(0.5);
-	const [brush, setBrush] = useState({type: 'PENCIL', width: 3, color: '#d946ef'})
+	const [brush, setBrush] = useState({type: 'PENCIL', width: 3, color: '#000000'})
 
 	return (
 		<BrushContext.Provider value={{brush, setBrush}}>

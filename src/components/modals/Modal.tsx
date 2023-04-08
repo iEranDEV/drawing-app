@@ -5,9 +5,13 @@ type ModalProps = {
 
 function Modal({ children, hideModal }: ModalProps) {
 
+    const handleBgClick = () => {
+        console.log('click')
+        if(hideModal) hideModal();
+    }
 
     return (
-        <div onClick={() => hideModal && hideModal()} className="h-screen w-screen fixed top-0 left-0 z-50">
+        <div onClick={handleBgClick} className="h-screen w-screen fixed top-0 left-0 z-40">
             {children}
         </div>
     )
