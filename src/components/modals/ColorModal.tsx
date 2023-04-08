@@ -5,10 +5,11 @@ import Modal from './Modal';
 
 
 function ColorModal({ loc, hideModal }: { loc?: {x: number, y: number}, hideModal?: Function}) {
-    const [color, setColor] = useState("#000000");
-
     const brushContext = useContext(BrushContext);
     const brush = brushContext.brush;
+
+    
+    const [color, setColor] = useState(brush.color);
 
     useEffect(() => {
         brushContext.setBrush({type: brush.type, color: color, width: brush.width});
