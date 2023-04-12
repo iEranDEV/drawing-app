@@ -43,6 +43,7 @@ function DrawingBoard({ ctx, setCtx, zoom }: DrawingBoardProps) {
     }
 
     const handleMouseUp = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+        handleDraw(e);
         setPainting({
             isPainting: false,
             startX: 0,
@@ -80,6 +81,7 @@ function DrawingBoard({ ctx, setCtx, zoom }: DrawingBoardProps) {
                 onMouseDown={(e) => handleMouseDown(e)} 
                 onMouseUp={(e) => handleMouseUp(e)}
                 onMouseMove={(e) => handleDraw(e)}
+                onMouseLeave={(e) => handleMouseUp(e)}
                 className="bg-white absolute cursor-crosshair origin-top-left"
                 style={{ width: '1920px', height: '1080px', transform: 'scale(' + getScale() + ')'}}
         >

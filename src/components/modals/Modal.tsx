@@ -6,7 +6,6 @@ type ModalProps = {
 function Modal({ children, hideModal }: ModalProps) {
 
     const handleBgClick = () => {
-        console.log('click')
         if(hideModal) hideModal();
     }
 
