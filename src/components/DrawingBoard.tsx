@@ -9,7 +9,8 @@ type DrawingBoardProps = {
 
 function DrawingBoard({ ctx, setCtx, zoom }: DrawingBoardProps) {
 
-    const brushContext = useContext(BrushContext)
+    const brushContext = useContext(BrushContext);
+    const brush = brushContext.brush;
 
     const [painting, setPainting] = useState({
         isPainting: false,
@@ -63,8 +64,12 @@ function DrawingBoard({ ctx, setCtx, zoom }: DrawingBoardProps) {
         let y = (e.clientY - rect.top) / zoom;
 
         if(ctx && canvasElement.current) {
-            ctx.lineWidth = brushContext.brush.width;
-            ctx.strokeStyle = brushContext.brush.color;
+            ctx.lineWidth = brush.width;
+            if(brush.type === 'PENCIL') {
+                ctx.strokeStyle = brush.color;
+            } else if (brush.type === 'ERASER') {
+                ctx.strokeStyle = 'white';
+            }
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
             ctx.lineTo(x, y);

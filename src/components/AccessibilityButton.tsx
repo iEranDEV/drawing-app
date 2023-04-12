@@ -38,7 +38,7 @@ function AccessibilityButton({ icon, modal, activeProp, onClick }: Accessibility
         <div className="relative">
             <div onClick={(e) => handleIconClick(e)} className="relative">
                 <span className={'peer ' + (active && 'text-indigo-600')}>{icon}</span>
-                {activeProp !== undefined && <div className="absolute h-1 w-5 bg-indigo-500 rounded-t-lg left-1/2 -translate-x-1/2 translate-y-1.5"></div>}
+                {active && <div className="absolute h-1 w-5 bg-indigo-500 rounded-t-lg left-1/2 -translate-x-1/2 translate-y-1.5"></div>}
             </div>
             {modalElement && active && modalElement}
         </div>
