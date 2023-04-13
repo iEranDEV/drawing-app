@@ -4,10 +4,13 @@ import { BrushContext } from "../context/BrushContext";
 type DrawingBoardProps = {
     ctx: CanvasRenderingContext2D | undefined | null,
     setCtx: Function,
-    zoom: number
+    zoom: number,
+    setCurrentHistory: Function,
+    currentHistory: number
 }
 
-function DrawingBoard({ ctx, setCtx, zoom }: DrawingBoardProps) {
+function DrawingBoard({ ctx, setCtx, zoom, setCurrentHistory, currentHistory }: DrawingBoardProps) {
+    const [points, setPoints] = useState(Array<CanvasPoint>());
 
     const brushContext = useContext(BrushContext);
     const brush = brushContext.brush;
@@ -32,14 +35,25 @@ function DrawingBoard({ ctx, setCtx, zoom }: DrawingBoardProps) {
         e.preventDefault();
 
         if(ctx && canvasElement.current) {
+
+            // Reset redo option
+            if(currentHistory !== 0) {
+                brushContext.setHistory([...brushContext.history].slice(currentHistory));
+                setCurrentHistory(0);
+            }
+
             let rect = (e.target as HTMLElement).getBoundingClientRect();
             let x = (e.clientX - rect.left) / zoom;
             let y = (e.clientY - rect.top) / zoom;
+            
+            //console.log(x + ' ' + y)
+            
             setPainting({
                 isPainting: true,
                 startX: x,
                 startY: y
             })
+            setPoints([{x: x, y: y}])
         }
     }
 
@@ -50,6 +64,13 @@ function DrawingBoard({ ctx, setCtx, zoom }: DrawingBoardProps) {
             startX: 0,
             startY: 0
         })
+        brushContext.setHistory([{
+            type: brush.type,
+            color: brush.color,
+            width: brush.width,
+            points: points
+        }, ...brushContext.history])
+        setPoints([]);
         if(ctx) {
             ctx.stroke();
             ctx.beginPath();
@@ -64,6 +85,9 @@ function DrawingBoard({ ctx, setCtx, zoom }: DrawingBoardProps) {
         let y = (e.clientY - rect.top) / zoom;
 
         if(ctx && canvasElement.current) {
+
+            setPoints([...points, {x: x, y:y}]);
+
             ctx.lineWidth = brush.width;
             if(brush.type === 'PENCIL') {
                 ctx.strokeStyle = brush.color;
@@ -86,7 +110,14 @@ function DrawingBoard({ ctx, setCtx, zoom }: DrawingBoardProps) {
                 onMouseDown={(e) => handleMouseDown(e)} 
                 onMouseUp={(e) => handleMouseUp(e)}
                 onMouseMove={(e) => handleDraw(e)}
-                onMouseLeave={(e) => handleMouseUp(e)}
+                onMouseLeave={(e) => {
+                    handleDraw(e);
+                    setPainting({
+                        isPainting: false,
+                        startX: 0,
+                        startY: 0
+                    })
+                }}
                 className="bg-white absolute cursor-crosshair origin-top-left"
                 style={{ width: '1920px', height: '1080px', transform: 'scale(' + getScale() + ')'}}
         >

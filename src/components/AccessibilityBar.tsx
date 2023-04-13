@@ -1,5 +1,5 @@
 import { AiOutlineClear } from 'react-icons/ai'
-import { BiSave, BiPencil, BiSquare, BiCircle, BiEraser, BiPlus, BiMinus } from 'react-icons/bi'
+import { BiSave, BiPencil, BiSquare, BiCircle, BiEraser, BiPlus, BiMinus, BiRedo, BiUndo } from 'react-icons/bi'
 import { RiPaintLine } from 'react-icons/ri'
 import { BsBorderWidth } from 'react-icons/bs'
 import LineWidthModal from './modals/LineWidthModal'
@@ -12,9 +12,11 @@ type AccessibilityBarProps = {
     ctx: CanvasRenderingContext2D | undefined | null,
     zoom: number,
     setZoom: Function,
+    setCurrentHistory: Function,
+    currentHistory: number
 }
 
-function AccessibilityBar({ ctx, zoom, setZoom }: AccessibilityBarProps) {
+function AccessibilityBar({ ctx, zoom, setZoom,currentHistory, setCurrentHistory }: AccessibilityBarProps) {
 
     const brushContext = useContext(BrushContext);
     const brush = brushContext.brush;
@@ -38,22 +40,21 @@ function AccessibilityBar({ ctx, zoom, setZoom }: AccessibilityBarProps) {
 
             {/* Save, undo, redo */}
             <div className='flex h-full gap-3 justify-center items-center'>
-                {/* Menu */}
-                {/*
-                <AiOutlineMenu className='icon-accessibility'></AiOutlineMenu>
-                */}
-
                 {/* Save image */}
-                <BiSave className='icon-accessibility'></BiSave>
+                <AccessibilityButton icon={<BiSave className='icon-accessibility icon-inactive'></BiSave>}></AccessibilityButton>
 
-                {/*}
-                <BiUndo className='icon-accessibility'></BiUndo>
+                {/* Undo history */}
+                <AccessibilityButton onClick={() => brushContext.history.length !== currentHistory && setCurrentHistory(currentHistory + 1)} icon={<BiUndo className={'icon-accessibility ' + (brushContext.history.length === currentHistory && 'icon-inactive')}></BiUndo>}></AccessibilityButton>
 
-                <BiRedo className='icon-accessibility'></BiRedo>
-                /*}
+                {/* Redo history */}
+                <AccessibilityButton onClick={() => (currentHistory > 0 && setCurrentHistory(currentHistory - 1))} icon={<BiRedo className={'icon-accessibility ' + (currentHistory === 0 && 'icon-inactive')}></BiRedo>}></AccessibilityButton>
 
                 {/* Clear canvas */}
-                <AccessibilityButton onClick={() => ctx?.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)} icon={<AiOutlineClear className='icon-accessibility'></AiOutlineClear>}></AccessibilityButton>
+                <AccessibilityButton onClick={() => {
+                    ctx?.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                    brushContext.setHistory([]);
+                    setCurrentHistory(0);
+                }} icon={<AiOutlineClear className='icon-accessibility'></AiOutlineClear>}></AccessibilityButton>
             </div>
 
             {/* Tools */}
@@ -66,7 +67,7 @@ function AccessibilityBar({ ctx, zoom, setZoom }: AccessibilityBarProps) {
                 <AccessibilityButton onClick={() => setBrushType('ERASER')} activeProp={brush.type === 'ERASER'} icon={<BiEraser className='icon-accessibility'></BiEraser>}></AccessibilityButton>
 
                 {/* Fill */}
-                <RiPaintLine className='icon-accessibility'></RiPaintLine>
+                <AccessibilityButton icon={<RiPaintLine className='icon-accessibility icon-inactive'></RiPaintLine>}></AccessibilityButton>
 
                 {/* Square */}
                 <AccessibilityButton icon={<BiSquare className='icon-accessibility'></BiSquare>}></AccessibilityButton>

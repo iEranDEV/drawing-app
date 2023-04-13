@@ -18,6 +18,10 @@
 	@apply h-6 w-6 cursor-pointer hover:text-neutral-800;
 }
 
+.icon-inactive {
+	@apply !text-neutral-300 hover:text-neutral-300;
+}
+
 * {
 	@apply select-none;
 }
