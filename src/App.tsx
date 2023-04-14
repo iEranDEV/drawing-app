@@ -12,17 +12,17 @@ function App() {
 
 	useEffect(() => {
 		const redraw = () => {
+
 			const toRedraw = history.slice(currentHistory);
 			if(ctx) {
 
 				ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
 				toRedraw.reverse().forEach((historyItem) => {
-					console.log(historyItem);
-					ctx.lineWidth = brush.width;
-					if(brush.type === 'PENCIL') {
-						ctx.strokeStyle = brush.color;
-					} else if (brush.type === 'ERASER') {
+					ctx.lineWidth = historyItem.width;
+					if(historyItem.type === 'PENCIL') {
+						ctx.strokeStyle = historyItem.color;
+					} else if (historyItem.type === 'ERASER') {
 						ctx.strokeStyle = 'white';
 					}
 					ctx.lineCap = 'round';

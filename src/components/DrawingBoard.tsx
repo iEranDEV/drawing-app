@@ -53,23 +53,31 @@ function DrawingBoard({ ctx, setCtx, zoom, setCurrentHistory, currentHistory }: 
                 startX: x,
                 startY: y
             })
-            setPoints([{x: x, y: y}])
+            setPoints([])
         }
     }
 
     const handleMouseUp = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
         handleDraw(e);
+
+        let rect = (e.target as HTMLElement).getBoundingClientRect();
+        let x = (e.clientX - rect.left) / zoom;
+        let y = (e.clientY - rect.top) / zoom;
+
+
+        brushContext.setHistory([{
+            type: brush.type,
+            color: brush.color,
+            width: brush.width,
+            points: [...points, {x: x, y: y}]
+        }, ...brushContext.history])
+
         setPainting({
             isPainting: false,
             startX: 0,
             startY: 0
         })
-        brushContext.setHistory([{
-            type: brush.type,
-            color: brush.color,
-            width: brush.width,
-            points: points
-        }, ...brushContext.history])
+
         setPoints([]);
         if(ctx) {
             ctx.stroke();
