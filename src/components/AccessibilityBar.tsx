@@ -35,13 +35,21 @@ function AccessibilityBar({ ctx, zoom, setZoom,currentHistory, setCurrentHistory
         }
     }
     
+    const saveImage = () => {
+        const canvasElement = document.getElementById("canvasElement");
+        const a = document.createElement("a");
+        a.href = (canvasElement as HTMLCanvasElement).toDataURL('image/png');
+        a.download = "image.png";
+        a.click();
+    }
+
     return (
         <div className="w-full h-12 bg-neutral-100 border-b border-neutral-300 px-5 flex justify-between items-center text-neutral-600 z-50">
 
             {/* Save, undo, redo */}
             <div className='flex h-full gap-3 justify-center items-center'>
                 {/* Save image */}
-                <AccessibilityButton icon={<BiSave className='icon-accessibility icon-inactive'></BiSave>}></AccessibilityButton>
+                <AccessibilityButton onClick={saveImage} icon={<BiSave className='icon-accessibility'></BiSave>}></AccessibilityButton>
 
                 {/* Undo history */}
                 <AccessibilityButton onClick={() => brushContext.history.length !== currentHistory && setCurrentHistory(currentHistory + 1)} icon={<BiUndo className={'icon-accessibility ' + (brushContext.history.length === currentHistory && 'icon-inactive')}></BiUndo>}></AccessibilityButton>
@@ -51,7 +59,11 @@ function AccessibilityBar({ ctx, zoom, setZoom,currentHistory, setCurrentHistory
 
                 {/* Clear canvas */}
                 <AccessibilityButton onClick={() => {
-                    ctx?.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                    if(ctx) {
+                        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                        ctx.fillStyle = 'white';
+                        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                    }
                     brushContext.setHistory([]);
                     setCurrentHistory(0);
                 }} icon={<AiOutlineClear className='icon-accessibility'></AiOutlineClear>}></AccessibilityButton>
@@ -70,10 +82,10 @@ function AccessibilityBar({ ctx, zoom, setZoom,currentHistory, setCurrentHistory
                 <AccessibilityButton icon={<RiPaintLine className='icon-accessibility icon-inactive'></RiPaintLine>}></AccessibilityButton>
 
                 {/* Square */}
-                <AccessibilityButton icon={<BiSquare className='icon-accessibility'></BiSquare>}></AccessibilityButton>
+                <AccessibilityButton icon={<BiSquare className='icon-accessibility icon-inactive'></BiSquare>}></AccessibilityButton>
 
                 {/* Circle */}
-                <AccessibilityButton icon={<BiCircle className='icon-accessibility'></BiCircle>}></AccessibilityButton>
+                <AccessibilityButton icon={<BiCircle className='icon-accessibility icon-inactive'></BiCircle>}></AccessibilityButton>
 
                 {/* Line width */}
                 <AccessibilityButton icon={<BsBorderWidth className='icon-accessibility'></BsBorderWidth>} modal={<LineWidthModal></LineWidthModal>}></AccessibilityButton>

@@ -26,8 +26,10 @@ function DrawingBoard({ ctx, setCtx, zoom, setCurrentHistory, currentHistory }: 
     useEffect(() => {
         setCtx(canvasElement.current?.getContext('2d'))
         if(canvasElement.current) {
-            canvasElement.current.width = canvasElement.current.clientWidth
-            canvasElement.current.height = canvasElement.current.clientHeight
+            canvasElement.current.width = canvasElement.current.clientWidth;
+            canvasElement.current.height = canvasElement.current.clientHeight;
+            (canvasElement.current.getContext('2d') as any).fillStyle = 'white';
+            canvasElement.current.getContext('2d')?.fillRect(0, 0, canvasElement.current.clientWidth, canvasElement.current.clientHeight);
         }
     }, [canvasElement])
 
@@ -45,8 +47,6 @@ function DrawingBoard({ ctx, setCtx, zoom, setCurrentHistory, currentHistory }: 
             let rect = (e.target as HTMLElement).getBoundingClientRect();
             let x = (e.clientX - rect.left) / zoom;
             let y = (e.clientY - rect.top) / zoom;
-            
-            //console.log(x + ' ' + y)
             
             setPainting({
                 isPainting: true,
@@ -126,7 +126,8 @@ function DrawingBoard({ ctx, setCtx, zoom, setCurrentHistory, currentHistory }: 
                         startY: 0
                     })
                 }}
-                className="bg-white absolute cursor-crosshair origin-top-left"
+                id="canvasElement"
+                className="absolute cursor-crosshair origin-top-left"
                 style={{ width: '1920px', height: '1080px', transform: 'scale(' + getScale() + ')'}}
         >
 
