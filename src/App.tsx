@@ -43,6 +43,25 @@ function App() {
 
 	}, [currentHistory])
 
+	useEffect(() => {
+		const changeZoom = (e: any) => {
+			let val = 0;
+			if(e.deltaY > 0) {
+				val = 10;
+			} else if (e.deltaY < 0) {
+				val = -10;
+			}
+			const value = (zoom * 100) - val;
+				if(value >= 50 && value <= 200) setZoom(value / 100);
+		}
+
+		document.addEventListener('wheel', changeZoom, true);
+
+		return () => {
+			document.removeEventListener('wheel', changeZoom, true);
+		}
+	}, [zoom]);
+
 	return (
 		<BrushContext.Provider value={{brush, setBrush, history, setHistory}}>
 			<div className="w-screen h-screen bg-neutral-200 flex flex-col">
