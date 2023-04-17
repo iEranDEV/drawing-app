@@ -66,6 +66,8 @@ function App() {
 		const disableScrollMobile = (e: TouchEvent) => {
 			if((e.target as any).localName === 'canvas' && e.touches.length === 1) {
 				e.preventDefault();
+			} else if(e.touches.length > 1) {
+				e.stopPropagation();
 			}
 		}
 

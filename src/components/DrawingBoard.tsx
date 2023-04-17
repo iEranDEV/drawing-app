@@ -125,16 +125,17 @@ function DrawingBoard({ ctx, setCtx, zoom, setCurrentHistory, currentHistory }: 
 
     const handleTouchStart = (e: TouchEvent) => {
         if(ctx && canvasElement.current) {
-            e.preventDefault();
-
-            // Reset redo option
-            if(currentHistory !== 0) {
-                brushContext.setHistory([...brushContext.history].slice(currentHistory));
-                setCurrentHistory(0);
-            }
 
             let rect = (e.target as HTMLElement).getBoundingClientRect();
             if(e.touches.length === 1) {
+
+                // Reset redo option
+                if(currentHistory !== 0) {
+                    brushContext.setHistory([...brushContext.history].slice(currentHistory));
+                    setCurrentHistory(0);
+                }
+
+                e.preventDefault();
                 let x = (e.touches[0].clientX - rect.left) / zoom;
                 let y = (e.touches[0].clientY - rect.top) / zoom;
                 
@@ -150,11 +151,11 @@ function DrawingBoard({ ctx, setCtx, zoom, setCurrentHistory, currentHistory }: 
 
     const handleMobileDraw = (e: TouchEvent) => {
         if(!painting.isPainting) return;
-        e.preventDefault();
 
         let rect = (e.target as HTMLElement).getBoundingClientRect();
 
         if(e.touches.length === 1) {
+            e.preventDefault();
             let x = (e.touches[0].clientX - rect.left) / zoom;
             let y = (e.touches[0].clientY - rect.top) / zoom;
 
@@ -177,6 +178,8 @@ function DrawingBoard({ ctx, setCtx, zoom, setCurrentHistory, currentHistory }: 
     }
 
     const handleTouchEnd = (e: TouchEvent) => {
+        console.log(e.touches);
+
         handleMobileDraw(e);
         e.preventDefault();
 
@@ -221,7 +224,7 @@ function DrawingBoard({ ctx, setCtx, zoom, setCurrentHistory, currentHistory }: 
                 className="absolute cursor-crosshair origin-top-left"
                 style={{ width: '1920px', height: '1080px', transform: 'scale(' + getScale() + ')'}}
         >
-
+            
         </canvas>
     )
 }
