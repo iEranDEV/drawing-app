@@ -63,6 +63,14 @@ function App() {
 			passive: false
 		});
 
+		const disableScrollMobile = (e: TouchEvent) => {
+			if((e.target as any).localName === 'canvas' && e.touches.length === 1) {
+				e.preventDefault();
+			}
+		}
+
+		document.addEventListener('touchmove', disableScrollMobile, { passive: false, capture: true})
+
 		return () => {
 			document.removeEventListener('wheel', changeZoom, true);
 		}

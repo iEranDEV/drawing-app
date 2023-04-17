@@ -31,7 +31,21 @@ function DrawingBoard({ ctx, setCtx, zoom, setCurrentHistory, currentHistory }: 
             (canvasElement.current.getContext('2d') as any).fillStyle = 'white';
             canvasElement.current.getContext('2d')?.fillRect(0, 0, canvasElement.current.clientWidth, canvasElement.current.clientHeight);
         }
-    }, [canvasElement])
+    }, [canvasElement]);
+
+    useEffect(() => {
+        if(ctx && canvasElement.current) {
+            canvasElement.current.addEventListener('touchstart', handleTouchStart, { passive: false });
+            canvasElement.current.addEventListener('touchmove', handleMobileDraw, { passive: false });
+            canvasElement.current.addEventListener('touchend', handleTouchEnd, { passive: false });
+        }
+
+        return () => {
+            canvasElement.current?.removeEventListener('touchstart', handleTouchStart);
+            canvasElement.current?.removeEventListener('touchmove', handleMobileDraw);
+            canvasElement.current?.removeEventListener('touchend', handleTouchEnd);
+        }
+    });
 
     const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
         e.preventDefault();
@@ -106,6 +120,83 @@ function DrawingBoard({ ctx, setCtx, zoom, setCurrentHistory, currentHistory }: 
             ctx.lineJoin = 'round';
             ctx.lineTo(x, y);
             ctx.stroke();
+        }
+    }
+
+    const handleTouchStart = (e: TouchEvent) => {
+        if(ctx && canvasElement.current) {
+            e.preventDefault();
+
+            // Reset redo option
+            if(currentHistory !== 0) {
+                brushContext.setHistory([...brushContext.history].slice(currentHistory));
+                setCurrentHistory(0);
+            }
+
+            let rect = (e.target as HTMLElement).getBoundingClientRect();
+            if(e.touches.length === 1) {
+                let x = (e.touches[0].clientX - rect.left) / zoom;
+                let y = (e.touches[0].clientY - rect.top) / zoom;
+                
+                setPainting({
+                    isPainting: true,
+                    startX: x,
+                    startY: y
+                })
+                setPoints([])
+            }
+        }
+    }
+
+    const handleMobileDraw = (e: TouchEvent) => {
+        if(!painting.isPainting) return;
+        e.preventDefault();
+
+        let rect = (e.target as HTMLElement).getBoundingClientRect();
+
+        if(e.touches.length === 1) {
+            let x = (e.touches[0].clientX - rect.left) / zoom;
+            let y = (e.touches[0].clientY - rect.top) / zoom;
+
+            if(ctx && canvasElement.current) {
+
+                setPoints([...points, {x: x, y:y}]);
+
+                ctx.lineWidth = brush.width;
+                if(brush.type === 'PENCIL') {
+                    ctx.strokeStyle = brush.color;
+                } else if (brush.type === 'ERASER') {
+                    ctx.strokeStyle = 'white';
+                }
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.lineTo(x, y);
+                ctx.stroke();
+            }
+        }
+    }
+
+    const handleTouchEnd = (e: TouchEvent) => {
+        handleMobileDraw(e);
+        e.preventDefault();
+
+        brushContext.setHistory([{
+            type: brush.type,
+            color: brush.color,
+            width: brush.width,
+            points: [...points]
+        }, ...brushContext.history])
+
+        setPainting({
+            isPainting: false,
+            startX: 0,
+            startY: 0
+        })
+
+        setPoints([]);
+        if(ctx) {
+            ctx.stroke();
+            ctx.beginPath();
         }
     }
 

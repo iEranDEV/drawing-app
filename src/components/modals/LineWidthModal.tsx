@@ -19,7 +19,7 @@ function LineWidthModal({ loc, hideModal }: { loc?: {x: number, y: number}, hide
             <div className="animate-slideFromTop absolute w-max bg-white border border-neutral-300 p-2 rounded-lg" style={{left: loc?.x, top: loc?.y}}>
                 {[1,3,5,8].map((val) => {
                     return (
-                        <div id={'modal_' + crypto.randomUUID()} onClick={(e) => handleWidthChange(e, val)} key={val} className={(brushContext.brush.width === val && 'bg-neutral-100') + ' cursor-pointer hover:bg-neutral-100 py-2 px-3 rounded-lg text-xs flex justify-center items-center gap-4 relative'}>
+                        <div id={'modal_' + val} onClick={(e) => handleWidthChange(e, val)} key={val} className={(brushContext.brush.width === val && 'bg-neutral-100') + ' cursor-pointer hover:bg-neutral-100 py-2 px-3 rounded-lg text-xs flex justify-center items-center gap-4 relative'}>
                             <span>{val}px</span>
                             <div className="w-16 bg-neutral-700" style={{height: val + 'px'}}></div>
 

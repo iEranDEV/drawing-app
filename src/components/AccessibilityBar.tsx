@@ -44,7 +44,7 @@ function AccessibilityBar({ ctx, zoom, setZoom,currentHistory, setCurrentHistory
     }
 
     return (
-        <div className="w-full h-12 bg-neutral-100 border-b border-neutral-300 px-5 flex justify-between items-center text-neutral-600 z-50">
+        <div className="w-full py-2 md:py-0 h-32 md:h-12 bg-neutral-100 border-b border-neutral-300 px-5 flex flex-col md:flex-row justify-between items-center text-neutral-600 z-50">
 
             {/* Save, undo, redo */}
             <div className='flex h-full gap-3 justify-center items-center'>
@@ -70,7 +70,7 @@ function AccessibilityBar({ ctx, zoom, setZoom,currentHistory, setCurrentHistory
             </div>
 
             {/* Tools */}
-            <div className='flex h-full gap-3 justify-center items-center'>
+            <div className='flex h-full gap-3 justify-center items-center order-3 md:order-none'>
                 
                 {/* Pen */}
                 <AccessibilityButton onClick={() => setBrushType('PENCIL')} activeProp={brush.type === 'PENCIL'} icon={<BiPencil className='icon-accessibility'></BiPencil>}></AccessibilityButton>
